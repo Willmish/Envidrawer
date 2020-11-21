@@ -1,18 +1,27 @@
-import scraper
-import controller
+from scraper.scraper import Scraper
+from controller.controller import Controller
+import threading
+import time
 
 def main():
-    envi_scraper = scraper.Scraper()
-    envi_controller = controller.Controller()
+    scraper = Scraper()
+    controller = Controller()
 
+    # spawn two threads and run one for any external events (user input etc)
     # run main loop
+    scraper_runner = threading.Thread(target=scraper.run)
+    controller_runner = threading.Thread(target=controller.run)
     try:
+        scraper_runner.start()
+        controller_runner.start()
         while True:
-            envi_controller.spin()
-            # spin
-            envi_scraper.spin()
+            time.sleep(0.5)
 
     except KeyboardInterrupt:
+        scraper.is_done = True
+        controller.is_done = True
+        scraper_runner.join()
+        controller_runner.join()
         print("EXITING")
 
 if __name__ == '__main__':
