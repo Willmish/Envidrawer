@@ -14,5 +14,6 @@ class Controller():
         while not self.is_done:
             time.sleep(0.5)
 
+
     def dummy_listener(self, args, rest=None):
         print(f"Received message {args}")

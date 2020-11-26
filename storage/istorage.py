@@ -1,6 +1,6 @@
 # Storage interface for either a file or DB
 
 class IStorage():
-    def save(self, data):
+    def save(self, data) -> bool:
         # some kind of formatted data
         pass
