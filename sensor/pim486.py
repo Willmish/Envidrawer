@@ -1,4 +1,4 @@
-from isensor import ISensor
+from sensor.isensor import ISensor
 from bme280 import BME280
 from pubsub import pub
 
