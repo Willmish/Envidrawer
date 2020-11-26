@@ -14,7 +14,7 @@ class Scraper():
         pub.subscribe(self.sensor_read_cb, 'sensor_read')
 
     def sensor_read_cb(self, args=None):
-        print("Obtained the reading!")
+        print("Obtained the reading! DATA: {args}")
 
 # spin here in a new thread
     def run(self):
