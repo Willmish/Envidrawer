@@ -1,0 +1,12 @@
+CHANGELOG.txt
+LICENSE.txt
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+bme280/__init__.py
+pimoroni_bme280.egg-info/PKG-INFO
+pimoroni_bme280.egg-info/SOURCES.txt
+pimoroni_bme280.egg-info/dependency_links.txt
+pimoroni_bme280.egg-info/requires.txt
+pimoroni_bme280.egg-info/top_level.txt
