@@ -2,13 +2,15 @@ from scraper.scraper import Scraper
 from controller.controller import Controller
 from sensor.isensor import ISensor
 from sensor.pim486 import PIM486
-from imports import *
+from imports import logger
 
 from typing import List
 import threading
 import time
 
 def main() -> None:
+
+    logger.setLevel('INFO')
     scraper: Scraper = Scraper()
     controller: Controller = Controller()
     sensors: List[ISensor] = []
@@ -41,7 +43,7 @@ def main() -> None:
         for s in sensors:
             s.close()
 
-        print("EXITING")
+        logger.info("Exiting")
 
 if __name__ == '__main__':
     main()
