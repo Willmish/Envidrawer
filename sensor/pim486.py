@@ -5,7 +5,6 @@ from pubsub import pub
 class PIM486(ISensor):
     def __init__(self):
         self.bme280 = BME280()
-        pass
 
     def poll(self): # some sensors are poll'able
         raw_temp = self.bme280.get_temperature()

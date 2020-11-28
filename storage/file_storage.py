@@ -1,4 +1,4 @@
-from istorage import IStorage
+from storage.istorage import IStorage
 
 class FileStorage(IStorage):
     def __init__(self, file_name):
