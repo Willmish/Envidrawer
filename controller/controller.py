@@ -1,5 +1,5 @@
 from pubsub import pub
-from imports import logger
+from imports import logInfo
 
 # Controller class for actuators, subscribes to the data scraper events
 class Controller():
@@ -17,4 +17,4 @@ class Controller():
 
 
     def dummy_listener(self, args, rest=None):
-        logger.info(f"Controller Received message {args}")
+        logInfo(f"Controller Received message {args}")

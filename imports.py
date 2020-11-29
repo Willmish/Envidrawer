@@ -1,4 +1,6 @@
 import colorlog
+import inspect # TODO: when performance hits, replace with sys
+import os
 
 handler = colorlog.StreamHandler()
 handler.setFormatter(colorlog.ColoredFormatter(
@@ -18,3 +20,27 @@ handler.setFormatter(colorlog.ColoredFormatter(
 logger = colorlog.getLogger('logger') # setup one global logger and filter by TID
 logger.addHandler(handler)
 
+def logDebug(message):
+    func = inspect.currentframe().f_back.f_code
+
+    logger.debug("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))
+
+def logInfo(message):
+    func = inspect.currentframe().f_back.f_code
+
+    logger.info("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))  # file name is good enough
+
+def logWarning(message):
+    func = inspect.currentframe().f_back.f_code
+
+    logger.warning("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))
+
+def logError(message):
+    func = inspect.currentframe().f_back.f_code
+
+    logger.error("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))
+
+def logCritical(message):
+    func = inspect.currentframe().f_back.f_code
+
+    logger.critical("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))

@@ -1,5 +1,5 @@
 from pubsub import pub
-from imports import logger
+from imports import logInfo
 #from storage.istorage import IStorage cannot import?
 # Data scraper which collects data from sensors (with a given frequency and publishes them)
 # periodically saving them to a DB
@@ -15,7 +15,7 @@ class Scraper():
         pub.subscribe(self.sensor_read_cb, 'sensor_read')
 
     def sensor_read_cb(self, args=None):
-        logger.info(f"Obtained the reading! DATA: {args}")
+        logInfo(f"Obtained the reading! DATA: {args}")
 
 # spin here in a new thread
     def run(self):
