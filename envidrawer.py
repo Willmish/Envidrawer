@@ -21,8 +21,8 @@ def main() -> None:
 
     # spawn two threads and run one for any external events (user input etc)
     # run main loop
-    scraper_runner: threading.Thread = threading.Thread(target=scraper.run)
-    controller_runner: threading.Thread = threading.Thread(target=controller.run)
+    scraper_runner: threading.Thread = threading.Thread(target=scraper.run, name="Scraper")
+    controller_runner: threading.Thread = threading.Thread(target=controller.run, name="Controller")
     try:
         scraper_runner.start()
         controller_runner.start()

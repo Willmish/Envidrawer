@@ -17,4 +17,4 @@ class Controller():
 
 
     def dummy_listener(self, args, rest=None):
-        logger.info(f"Received message {args}")
+        logger.info(f"Controller Received message {args}")

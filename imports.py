@@ -1,9 +1,8 @@
-#from bme280 import BME280 TODO: make them global?
 import colorlog
 
 handler = colorlog.StreamHandler()
 handler.setFormatter(colorlog.ColoredFormatter(
-        "%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
+        "[%(asctime)s.%(msecs)03d][TID: %(threadName)-10s : %(log_color)s%(levelname)-8s]%(reset)s %(blue)s%(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         reset=True,
         log_colors={
