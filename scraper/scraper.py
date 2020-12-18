@@ -22,7 +22,10 @@ class Scraper():
         import time
         while not self.is_done:
             pub.sendMessage('dummy_topic', args="dupa")
+
+
+            self.storage.write_all()
             time.sleep(0.5)
 
-        self.storage.save() # do last one flush of data and die
+        self.storage.write_all() # do last one flush of data and die
 
