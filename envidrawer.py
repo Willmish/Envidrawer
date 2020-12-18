@@ -3,6 +3,7 @@ from controller.controller import Controller
 from sensor.isensor import ISensor
 from sensor.pim486 import PIM486
 from imports import logger, logInfo
+from storage.db import DBStorage
 
 from typing import List
 import threading
@@ -11,7 +12,7 @@ import time
 def main() -> None:
 
     logger.setLevel('INFO')
-    scraper: Scraper = Scraper()
+    scraper: Scraper = Scraper(DBStorage()) # TODO: register it other way?
     controller: Controller = Controller()
     sensors: List[ISensor] = []
 

@@ -44,3 +44,12 @@ def logCritical(message):
     func = inspect.currentframe().f_back.f_code
 
     logger.critical("[%s::%s] %s" % (os.path.basename(func.co_filename), func.co_name, message))
+
+# universal sensor data structure (could be done most efficiently TODO:)
+class SensorData():
+    def __init__(self, sensor_group, sensor_name, sensor_type, time, value):
+        self.grp = sensor_group
+        self.name = sensor_name
+        self.type = sensor_type
+        self.time = time
+        self.val = value
