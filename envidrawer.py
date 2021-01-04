@@ -2,6 +2,7 @@ from scraper.scraper import Scraper
 from controller.controller import Controller
 from sensor.isensor import ISensor
 from sensor.pim486 import PIM486
+from sensor.arduino_serial_sensors import ArduinoSerialInterface
 from imports import logger, logInfo
 from storage.db import DBStorage
 
@@ -19,6 +20,7 @@ def main() -> None:
     # register all sensors
     # TODO: add a real sensor and get data running - FAST
     sensors.append(PIM486())
+    sensors.append(ArduinoSerialInterface())
 
     # spawn two threads and run one for any external events (user input etc)
     # run main loop
