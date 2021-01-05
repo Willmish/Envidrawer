@@ -67,7 +67,7 @@ class Controller():
 
                 GPIO.output(MOTOR2_PINS[0], MOTOR2_FORWARD[0])
                 GPIO.output(MOTOR2_PINS[1], MOTOR2_FORWARD[1])
-            
+
             GPIO.output(MOTOR1_PINS[0], MOTOR1_STATIONARY[0])
             GPIO.output(MOTOR1_PINS[1], MOTOR1_STATIONARY[1])
 
@@ -76,7 +76,7 @@ class Controller():
             vertical_sensor.close()
             logInfo(f"Controller received motion_status message {args}, Envidrawer is outside!")
 
-        # Case 2:  POSITION OUTSIDE, MOTOR BACKWARD 
+        # Case 2:  POSITION OUTSIDE, MOTOR BACKWARD
         if position_status == "OUTSIDE" and motor_status == "BACKWARD":
             logInfo(f"Controller received motion_status message {args}, Begin moving inside!")
             pinda_val = horizontal_sensor.poll()
@@ -90,7 +90,7 @@ class Controller():
 
                 GPIO.output(MOTOR2_PINS[0], MOTOR2_BACKWARD[0])
                 GPIO.output(MOTOR2_PINS[1], MOTOR2_BACKWARD[1])
-            
+
             GPIO.output(MOTOR1_PINS[0], MOTOR1_STATIONARY[0])
             GPIO.output(MOTOR1_PINS[1], MOTOR1_STATIONARY[1])
 
@@ -99,8 +99,8 @@ class Controller():
             horizontal_sensor.close()
             logInfo(f"Controller received motion_status message {args}, Envidrawer is inside!")
 
-        
-        
+
+
 
 
     def dummy_listener(self, args, rest=None):

@@ -12,7 +12,7 @@ class DBStorage(IStorage):
         self.bucket_name = getenv("DB_BUCKET")
 
     def write_all(self, records: List[SensorData]) -> bool:
-        logInfo("Saving data to DB")
+        #logInfo("Saving data to DB")
         formatted = self.format_data(records)
         self.write_api.write(bucket=self.bucket_name, record=formatted)
 

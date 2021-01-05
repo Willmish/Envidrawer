@@ -14,15 +14,13 @@ from sentry.temperature_sentry import TemperatureSentry
 # internal
 from imports import logger, logInfo
 from storage.db import DBStorage
+from input import Input
 # RPi
 import RPi.GPIO as GPIO
 
 from typing import List
 import threading
 import time
-
-# HACK TODO fix
-user_input = None
 
 def main() -> None:
 
@@ -34,18 +32,20 @@ def main() -> None:
     GPIO.setup(MOTOR2_PINS, GPIO.OUT)
     # -------
     logger.setLevel('INFO')
-    scraper: Scraper = Scraper(DBStorage())
-    controller: Controller = Controller()
-    sensors: List[ISensor] = []
-    sentries: List[ISentry] = []
+
     horizontal_sensor: HorizontalCapacitanceSensor = HorizontalCapacitanceSensor()
     vertical_sensor: VerticalCapacitanceSensor = VerticalCapacitanceSensor()
+    scraper: Scraper = Scraper(DBStorage())
+    controller: Controller = Controller(horizontal_sensor, vertical_sensor)
+    sensors: List[ISensor] = []
+    sentries: List[ISentry] = []
 
     # TODO: add LCD display?
+    input = Input()
 
     # register all sensors
-    sensors.append(PIM486())
-    sensors.append(ArduinoSerialInterface())
+#    sensors.append(PIM486())
+#    sensors.append(ArduinoSerialInterface())
 
     # register all sentries
     sentries.append(HumiditySentry())
@@ -57,12 +57,12 @@ def main() -> None:
     # run main loop
     scraper_runner: threading.Thread = threading.Thread(target=scraper.run, name="Scraper")
     controller_runner: threading.Thread = threading.Thread(target=controller.run, name="Controller")
-#    user_prompt: threading.Thread = threading.Thread(target=user_prompt, name="User Prompt")
+    prompt_runner: threading.Thread = threading.Thread(target=input.user_prompt, name="User Prompt")
 
     try:
         scraper_runner.start()
         controller_runner.start()
-#        user_prompt.start()
+        prompt_runner.start()
         while True:
             for s in sensors:
                 s.poll() # poll for data for most of the sensors
@@ -75,6 +75,7 @@ def main() -> None:
         controller.is_done = True
         scraper_runner.join()
         controller_runner.join()
+        prompt_runner.join()
 
         # deinit all sensors
         for s in sensors:
@@ -86,14 +87,4 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
-
-def user_prompt():
-    try:
-        while True:
-            user_input = input("Welcome to Envidrawer what to do?\n" +
-                               "1 - Fl")
-    except KeyboardInterrupt:
-        user_input = None
-        return
-
 

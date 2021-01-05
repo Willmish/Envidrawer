@@ -24,7 +24,7 @@ class Scraper():
     def run(self):
         import time
         while not self.is_done:
-            pub.sendMessage('dummy_topic', args="dupa")
+#            pub.sendMessage('dummy_topic', args="dupa")
 
 
             self.storage.write_all(self.message_queue)
