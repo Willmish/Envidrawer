@@ -21,6 +21,9 @@ from typing import List
 import threading
 import time
 
+# HACK TODO fix
+user_input = None
+
 def main() -> None:
 
     # Setup GPIO
@@ -54,9 +57,12 @@ def main() -> None:
     # run main loop
     scraper_runner: threading.Thread = threading.Thread(target=scraper.run, name="Scraper")
     controller_runner: threading.Thread = threading.Thread(target=controller.run, name="Controller")
+#    user_prompt: threading.Thread = threading.Thread(target=user_prompt, name="User Prompt")
+
     try:
         scraper_runner.start()
         controller_runner.start()
+#        user_prompt.start()
         while True:
             for s in sensors:
                 s.poll() # poll for data for most of the sensors
@@ -80,3 +86,14 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
+
+def user_prompt():
+    try:
+        while True:
+            user_input = input("Welcome to Envidrawer what to do?\n" +
+                               "1 - Fl")
+    except KeyboardInterrupt:
+        user_input = None
+        return
+
+
