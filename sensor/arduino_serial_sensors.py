@@ -1,6 +1,7 @@
 from sensor.isensor import ISensor
 from pubsub import pub
-from imports import logInfo
+from imports import logInfo, SensorData
+from datetime import datetime
 from time import sleep
 import serial
 
@@ -16,10 +17,12 @@ class ArduinoSerialInterface(ISensor):
     def poll(self):
         self.arduino_serial.write((bytes(ArduinoSerialInterface.get_msg, 'ascii')))
         sleep(0.05) # Wait for arduino to process and send data
-        data = self.arduino_serial.readline()#[:-2] # Cut out endline char 
+        raw_data = self.arduino_serial.readline()#[:-2] # Cut out endline char 
         #data = str(data, encoding='ascii')
-        if data:
-            logInfo(f"Arduino sent data over serial: {data}")
+        if raw_data:
+            logInfo(f"Arduino sent data over serial: {raw_data}")
+            # TODO split data based on newlines, wait for start and end signal
+            data = SensorData("arduino_serial", "_____", "_____", datetime.now(), raw_data)
             pub.sendMessage("sensor_read", args=data)
 
     def close(self):
