@@ -14,6 +14,8 @@ from sentry.temperature_sentry import TemperatureSentry
 # internal
 from imports import logger, logInfo
 from storage.db import DBStorage
+# RPi
+import RPi.GPIO as GPIO
 
 from typing import List
 import threading
@@ -21,19 +23,26 @@ import time
 
 def main() -> None:
 
+    # Setup GPIO
+    MOTOR1_PINS = [11, 13]
+    MOTOR2_PINS = [16, 15]
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(MOTOR1_PINS, GPIO.OUT)
+    GPIO.setup(MOTOR2_PINS, GPIO.OUT)
+    # -------
     logger.setLevel('INFO')
     scraper: Scraper = Scraper(DBStorage())
     controller: Controller = Controller()
     sensors: List[ISensor] = []
     sentries: List[ISentry] = []
+    horizontal_sensor: HorizontalCapacitanceSensor = HorizontalCapacitanceSensor()
+    vertical_sensor: VerticalCapacitanceSensor = VerticalCapacitanceSensor()
 
     # TODO: add LCD display?
 
     # register all sensors
     sensors.append(PIM486())
     sensors.append(ArduinoSerialInterface())
-    sensors.append(VerticalCapacitanceSensor())
-    sensors.append(HorizontalCapacitanceSensor())
 
     # register all sentries
     sentries.append(HumiditySentry())
@@ -64,6 +73,8 @@ def main() -> None:
         # deinit all sensors
         for s in sensors:
             s.close()
+        # GPIO CLEANUP
+        GPIO.cleanup()
 
         logInfo("Exiting")
 
