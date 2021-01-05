@@ -25,9 +25,9 @@ import time
 def main() -> None:
 
     # Setup GPIO
-    MOTOR1_PINS = [11, 13]
-    MOTOR2_PINS = [16, 15]
-    GPIO.setmode(GPIO.BOARD)
+    MOTOR1_PINS = [17, 27]
+    MOTOR2_PINS = [23, 22]
+    GPIO.setmode(GPIO.BCM)
     GPIO.setup(MOTOR1_PINS, GPIO.OUT)
     GPIO.setup(MOTOR2_PINS, GPIO.OUT)
     # -------

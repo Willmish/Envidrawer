@@ -4,8 +4,8 @@ from RPi import GPIO
 class Input():
     def __init__(self):
         self.status = "OUTSIDE"
-        self.MOTOR1_PINS = [11, 13]
-        self.MOTOR2_PINS = [16, 15]
+        self.MOTOR1_PINS = [17, 27]
+        self.MOTOR2_PINS = [23, 22]
 
     def user_prompt(self):
         try:
@@ -21,6 +21,7 @@ class Input():
                                    "8 - Water pump START\n" +
                                    "9 - Water pump STOP\n"
                                    )
+                print(user_input)
                 if int(user_input) < 1 or int(user_input) > 9:
                     user_input = None
                 self.interpret_user_input(user_input)

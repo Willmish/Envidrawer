@@ -4,8 +4,8 @@ from sensor.capacitance_sensor import VerticalCapacitanceSensor, HorizontalCapac
 
 # Controller class for actuators, subscribes to the data scraper events
 class Controller():
-    MOTOR1_PINS = (11, 13)
-    MOTOR2_PINS = (16, 15)
+    MOTOR1_PINS = (17, 27)
+    MOTOR2_PINS = (23, 22)
     MOTOR1_FORWARD = (0, 1)
     MOTOR1_STATIONARY = (0, 0)
     MOTOR1_BACKWARD = (1, 0)
@@ -56,12 +56,12 @@ class Controller():
         # Case 1:  POSITION INSIDE, MOTOR FORWARD
         if position_status == "INSIDE" and motor_status == "FORWARD":
             logInfo(f"Controller received motion_status message {args}, Begin moving outside!")
-            pinda_val = vertical_sensor.poll()
+            pinda_val = self.vertical_sensor.poll()
             if not pinda_val:
                 logError(f"Controller received motion_status message {args}, vertical capacitance sensor not triggered before motion began!")
                 return
             while pinda_val:
-                pinda_val = vertical_sensor.poll()
+                pinda_val = self.vertical_sensor.poll()
                 GPIO.output(MOTOR1_PINS[0], MOTOR1_FORWARD[0])
                 GPIO.output(MOTOR1_PINS[1], MOTOR1_FORWARD[1])
 
@@ -73,18 +73,18 @@ class Controller():
 
             GPIO.output(MOTOR2_PINS[0], MOTOR2_STATIONARY[0])
             GPIO.output(MOTOR2_PINS[1], MOTOR2_STATIONARY[1])
-            vertical_sensor.close()
+            self.vertical_sensor.close()
             logInfo(f"Controller received motion_status message {args}, Envidrawer is outside!")
 
         # Case 2:  POSITION OUTSIDE, MOTOR BACKWARD
         if position_status == "OUTSIDE" and motor_status == "BACKWARD":
             logInfo(f"Controller received motion_status message {args}, Begin moving inside!")
-            pinda_val = horizontal_sensor.poll()
+            pinda_val = self.horizontal_sensor.poll()
             if pinda_val:
                 logError(f"Controller received motion_status message {args}, horizontal capacitance sensor triggered before motion began!")
                 return
             while pinda_val:
-                pinda_val = horizontal_sensor.poll()
+                pinda_val = self.horizontal_sensor.poll()
                 GPIO.output(MOTOR1_PINS[0], MOTOR1_BACKWARD[0])
                 GPIO.output(MOTOR1_PINS[1], MOTOR1_BACKWARD[1])
 
@@ -96,7 +96,7 @@ class Controller():
 
             GPIO.output(MOTOR2_PINS[0], MOTOR2_STATIONARY[0])
             GPIO.output(MOTOR2_PINS[1], MOTOR2_STATIONARY[1])
-            horizontal_sensor.close()
+            self.horizontal_sensor.close()
             logInfo(f"Controller received motion_status message {args}, Envidrawer is inside!")
 
 

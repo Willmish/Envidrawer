@@ -18,7 +18,7 @@ class CapacitanceSensor(ISensor):
         if not automationhat.output[self.output_pin_no]:
             automationhat.output[self.output_pin_no].write(True)
 
-        raw_data = True if automationhat.analog[analog_input_pin_no].read() < CapacitanceSensor.threshold_voltage else False
+        raw_data = True if automationhat.analog[self.analog_input_pin_no].read() < CapacitanceSensor.threshold_voltage else False
         logInfo(f"{self.name} PINDA got reading {raw_data}")
         data = SensorData("capacitance_sensor", "horizontal", "distance", datetime.now(), raw_data)
         pub.sendMessage("sensor_read", args=data)
