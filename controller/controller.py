@@ -7,6 +7,7 @@ class Controller():
         self.update_freq = 50 # in Hz
 
         pub.subscribe(self.dummy_listener, 'dummy_topic')
+        # subscribe to sentry messages (warnings etc)
         self.is_done = False
 
 # spin here in a new thread

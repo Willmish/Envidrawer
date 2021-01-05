@@ -1,6 +1,7 @@
 from scraper.scraper import Scraper
 from controller.controller import Controller
 from sensor.isensor import ISensor
+from sentry.isentry import ISentry
 from sensor.pim486 import PIM486
 from sensor.arduino_serial_sensors import ArduinoSerialInterface
 from imports import logger, logInfo
@@ -16,6 +17,7 @@ def main() -> None:
     scraper: Scraper = Scraper(DBStorage()) # TODO: register it other way?
     controller: Controller = Controller()
     sensors: List[ISensor] = []
+    sentries: List[ISentry] = []
 
     # register all sensors
     # TODO: add a real sensor and get data running - FAST
