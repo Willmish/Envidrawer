@@ -33,7 +33,6 @@ class Input():
             return
 
     def interpret_user_input(self, inp):
-        self.status = "OUTSIDE"
         if inp is None:
             return
 
