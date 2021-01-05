@@ -26,6 +26,14 @@ class ArduinoSerialInterface(ISensor):
             for i in range(1, len(split) - 1, 2):
                 data = SensorData("Arduino", sensor_name, split[i], datetime.now(), split[i + 1])
                 pub.sendMessage("sensor_read", args=data)
+                # nasty else for sentry data signalling
+                if split[i] == "water":
+                    pub.sendMessage("water_level", split[i + 1])
+                elif split[i] == "humidity_near":
+                    pub.sendMessage("humidity_near", split[i + 1])
+                elif split[i] == "humidity_far":
+                    pub.sendMessage("humidity_far", split[i + 1])
+
 
     def close(self):
         self.arduino_serial.close()

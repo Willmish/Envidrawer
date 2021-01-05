@@ -2,6 +2,7 @@ import automationhat
 from pubsub import pub
 from imports import logInfo, SensorData
 from datetime import datetime
+from sensor.isensor import ISensor
 
 class CapacitanceSensor(ISensor):
     # TODO may be necessary to tweak this during debugging,
