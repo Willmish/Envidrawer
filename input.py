@@ -38,17 +38,13 @@ class Input():
 
         inp = int(inp)
         if inp == 1:
-            pass
-
+            pub.sendMessage("leds_control", args=1)
         elif inp == 2:
-            pass
-
+            pub.sendMessage("leds_control", args=0)
         elif inp == 3:
-            pass
-
+            pub.sendMessage("fans_control", args=100) # TODO: fix pwm
         elif inp == 4:
-            pass
-
+            pub.sendMessage("fans_control", args=0) # TODO: fix pwm
         elif inp == 5:
             pub.sendMessage("motion_status", args=["FORWARD", self.status])
             self.status = "OUTSIDE"

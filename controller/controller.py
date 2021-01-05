@@ -11,13 +11,19 @@ MOTOR1_BACKWARD = (1, 0)
 MOTOR2_FORWARD = (0, 1)
 MOTOR2_STATIONARY = (0, 0)
 MOTOR2_BACKWARD = (1, 0)
+
+LED_PIN = 24
+FAN_PIN = 13
+
 # Controller class for actuators, subscribes to the data scraper events
 class Controller():
     def __init__(self, horizontal_sensor: HorizontalCapacitanceSensor, vertical_sensor: VerticalCapacitanceSensor):
         self.update_freq = 50 # in Hz
 
-        pub.subscribe(self.dummy_listener, 'dummy_topic')
         pub.subscribe(self.motion_status_listener, 'motion_status')
+
+        pub.subscribe(self.fans_control, 'fans_control')
+        pub.subscribe(self.leds_control, 'fans_control')
 
         # subscribe to sentry messages (warnings etc)
         self.is_done = False
@@ -26,11 +32,16 @@ class Controller():
         self.horizontal_sensor = horizontal_sensor
         self.vertical_sensor = vertical_sensor
 
+        self.fan_pwm = GPIO.PWM(FAN_PIN, 200)
+
 # spin here in a new thread
     def run(self):
+        self.fan_pwm.start(0)
         import time
         while not self.is_done:
             time.sleep(0.5)
+
+        self.fan_pwm.stop()
 
     def motion_status_listener(self, args, rest=None):
         # Motor messages: FORWARD, BACKWARD, STOP
@@ -100,9 +111,14 @@ class Controller():
             self.horizontal_sensor.close()
             logInfo(f"Controller received motion_status message {args}, Envidrawer is inside!")
 
+    def fans_control(self, args, rest=None):
+        logInfo(f"Controller received fans control message: duty_cycle {args}")
+        self.fan_pwm.ChangeDutyCycle(args)
 
-
-
-
-    def dummy_listener(self, args, rest=None):
-        logInfo(f"Controller Received message {args}")
+    def leds_control(self, args, rest=None):
+        if args == 0:
+            logInfo(f"Controller received LEDs control message OFF")
+            GPIO.output(LED_PIN, GPIO.LOW)
+        else:
+            logInfo(f"Controller received LEDs control message ON")
+            GPIO.output(LED_PIN, GPIO.HIGH)
