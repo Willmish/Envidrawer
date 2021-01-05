@@ -17,7 +17,7 @@ class Scraper():
         self.message_queue = []
 
     def sensor_read_cb(self, args: SensorData=None):
-        logInfo(f"Obtained the reading! DATA: {args}")
+        #logInfo(f"Obtained the reading! DATA: {args}")
         self.message_queue.append(args) # TODO:  thread safe list
 
 # spin here in a new thread

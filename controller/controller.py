@@ -18,6 +18,7 @@ class Controller():
 
         pub.subscribe(self.dummy_listener, 'dummy_topic')
         pub.subscribe(self.motion_status_listener, 'motion_status')
+
         # subscribe to sentry messages (warnings etc)
         self.is_done = False
 
@@ -79,10 +80,6 @@ class Controller():
 
         # Case 2:  POSITION OUTSIDE, MOTOR BACKWARD
         if position_status == "OUTSIDE" and motor_status == "BACKWARD":
-            pinda_val = self.horizontal_sensor.poll()
-            while not pinda_val:
-                pinda_val = self.horizontal_sensor.poll()
-            logInfo(f"Controller received motion_status message {args}, Begin moving inside!")
             pinda_val = self.horizontal_sensor.poll()
             if pinda_val:
                 logError(f"Controller received motion_status message {args}, horizontal capacitance sensor triggered before motion began!")

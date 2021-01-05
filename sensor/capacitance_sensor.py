@@ -15,18 +15,18 @@ class CapacitanceSensor(ISensor):
 
     def poll(self):
         # Turns on the sensor (if not already on) and returns a reading
-        if not automationhat.output[self.output_pin_no]:
-            automationhat.output[self.output_pin_no].write(True)
+        automationhat.output[self.output_pin_no].write(True)
 
         raw_data = True if automationhat.analog[self.analog_input_pin_no].read() < CapacitanceSensor.threshold_voltage else False
         logInfo(f"{self.name} PINDA got reading {raw_data}")
         data = SensorData("capacitance_sensor", "horizontal", "distance", datetime.now(), raw_data)
         pub.sendMessage("sensor_read", args=data)
-
+        # RETURN THE VALUE FOR DEMO TODO REMOVE LATER
+        return raw_data
+    
     def close(self):
         # Turns off the sensor (if not already off)
-        if automationhat.output[self.output_pin_no]:
-            automationhat.output[self.output_pin_no].write(False)
+        automationhat.output[self.output_pin_no].write(False)
 
 class HorizontalCapacitanceSensor(CapacitanceSensor):
     def __init__(self):
