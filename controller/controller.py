@@ -1,17 +1,18 @@
 from pubsub import pub
 from imports import logInfo, logWarning, logError
 from sensor.capacitance_sensor import VerticalCapacitanceSensor, HorizontalCapacitanceSensor
+import RPi.GPIO as GPIO
 
+MOTOR2_PINS = (23, 22)
+MOTOR1_PINS = (17, 27)
+MOTOR1_FORWARD = (0, 1)
+MOTOR1_STATIONARY = (0, 0)
+MOTOR1_BACKWARD = (1, 0)
+MOTOR2_FORWARD = (0, 1)
+MOTOR2_STATIONARY = (0, 0)
+MOTOR2_BACKWARD = (1, 0)
 # Controller class for actuators, subscribes to the data scraper events
 class Controller():
-    MOTOR1_PINS = (17, 27)
-    MOTOR2_PINS = (23, 22)
-    MOTOR1_FORWARD = (0, 1)
-    MOTOR1_STATIONARY = (0, 0)
-    MOTOR1_BACKWARD = (1, 0)
-    MOTOR2_FORWARD = (0, 1)
-    MOTOR2_STATIONARY = (0, 0)
-    MOTOR2_BACKWARD = (1, 0)
     def __init__(self, horizontal_sensor: HorizontalCapacitanceSensor, vertical_sensor: VerticalCapacitanceSensor):
         self.update_freq = 50 # in Hz
 
@@ -78,12 +79,15 @@ class Controller():
 
         # Case 2:  POSITION OUTSIDE, MOTOR BACKWARD
         if position_status == "OUTSIDE" and motor_status == "BACKWARD":
+            pinda_val = self.horizontal_sensor.poll()
+            while not pinda_val:
+                pinda_val = self.horizontal_sensor.poll()
             logInfo(f"Controller received motion_status message {args}, Begin moving inside!")
             pinda_val = self.horizontal_sensor.poll()
             if pinda_val:
                 logError(f"Controller received motion_status message {args}, horizontal capacitance sensor triggered before motion began!")
                 return
-            while pinda_val:
+            while not pinda_val:
                 pinda_val = self.horizontal_sensor.poll()
                 GPIO.output(MOTOR1_PINS[0], MOTOR1_BACKWARD[0])
                 GPIO.output(MOTOR1_PINS[1], MOTOR1_BACKWARD[1])

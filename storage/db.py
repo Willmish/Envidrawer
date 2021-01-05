@@ -13,8 +13,9 @@ class DBStorage(IStorage):
 
     def write_all(self, records: List[SensorData]) -> bool:
         #logInfo("Saving data to DB")
-        formatted = self.format_data(records)
-        self.write_api.write(bucket=self.bucket_name, record=formatted)
+        #formatted = self.format_data(records)
+        #self.write_api.write(bucket=self.bucket_name, record=formatted)
+        pass
 
 
     def write_single(self, record: SensorData) -> bool:
