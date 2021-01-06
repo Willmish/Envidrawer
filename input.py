@@ -18,8 +18,8 @@ class Input():
                                    "5 - Move FORWARDS\n" +
                                    "6 - Move BACKWARDS\n" +
                                    "7 - STOP\n" +
-                                   "8 - Water pump START\n" +
-                                   "9 - Water pump STOP\n" +
+                                   "8 - Water pump ON\n" +
+                                   "9 - Water pump OFF\n" +
                                    "10 - Move FORWARDS NO PINDA\n"
                                    )
                 print(user_input)
@@ -56,7 +56,9 @@ class Input():
             pub.sendMessage("motion_status", args=["STOP", self.status])
         elif inp == 8:
             pass
+            #pub.sendMessage("pump_control", args=1) # TODO: relay burned!!!?
         elif inp == 9:
             pass
+            #pub.sendMessage("pump_control", args=0) # TODO: relay burned!!!?
         elif inp == 10:
             pub.sendMessage("motion_status", args=["OUT", self.status])

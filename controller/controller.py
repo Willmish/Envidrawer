@@ -2,6 +2,7 @@ from pubsub import pub
 from imports import logInfo, logWarning, logError
 from sensor.capacitance_sensor import VerticalCapacitanceSensor, HorizontalCapacitanceSensor
 import RPi.GPIO as GPIO
+import automationhat
 
 MOTOR2_PINS = (23, 22)
 MOTOR1_PINS = (17, 27)
@@ -23,7 +24,8 @@ class Controller():
         pub.subscribe(self.motion_status_listener, 'motion_status')
 
         pub.subscribe(self.fans_control, 'fans_control')
-        pub.subscribe(self.leds_control, 'fans_control')
+        pub.subscribe(self.leds_control, 'leds_control')
+        pub.subscribe(self.pump_control, 'pump_control')
 
         # subscribe to sentry messages (warnings etc)
         self.is_done = False
@@ -32,6 +34,8 @@ class Controller():
         self.horizontal_sensor = horizontal_sensor
         self.vertical_sensor = vertical_sensor
 
+        GPIO.setup(FAN_PIN, GPIO.OUT)
+        GPIO.setup(LED_PIN, GPIO.OUT)
         self.fan_pwm = GPIO.PWM(FAN_PIN, 200)
 
 # spin here in a new thread
@@ -131,3 +135,11 @@ class Controller():
         else:
             logInfo(f"Controller received LEDs control message ON")
             GPIO.output(LED_PIN, GPIO.HIGH)
+
+    def pump_control(self, args, rest=None):
+        if args == 0:
+            logInfo(f"Controller received PUMP control message OFF")
+            automationhat.relay.one.off()
+        else:
+            logInfo(f"Controller received PUMP control message ON")
+            automationhat.relay.one.on()
