@@ -49,6 +49,15 @@ class Controller():
         # Message format: [MOTOR_STATUS, POSITION_STATUS]
         logInfo(f"Controller received motion_status message {args}")
         motor_status, position_status = args
+        if motor_status == "OUT":
+                # TODO remove this
+                # IN CASE OF FUCKUP, move out without sensor
+                GPIO.output(MOTOR1_PINS[0], MOTOR1_FORWARD[0])
+                GPIO.output(MOTOR1_PINS[1], MOTOR1_FORWARD[1])
+
+                GPIO.output(MOTOR2_PINS[0], MOTOR2_FORWARD[0])
+                GPIO.output(MOTOR2_PINS[1], MOTOR2_FORWARD[1])
+
         if motor_status == "STOP":
             GPIO.output(MOTOR1_PINS[0], MOTOR1_STATIONARY[0])
             GPIO.output(MOTOR1_PINS[1], MOTOR1_STATIONARY[1])

@@ -19,10 +19,11 @@ class Input():
                                    "6 - Move BACKWARDS\n" +
                                    "7 - STOP\n" +
                                    "8 - Water pump START\n" +
-                                   "9 - Water pump STOP\n"
+                                   "9 - Water pump STOP\n" +
+                                   "10 - Move FORWARDS NO PINDA\n"
                                    )
                 print(user_input)
-                if int(user_input) < 1 or int(user_input) > 9:
+                if int(user_input) < 1 or int(user_input) > 10:
                     user_input = None
                 self.interpret_user_input(user_input)
 
@@ -57,3 +58,5 @@ class Input():
             pass
         elif inp == 9:
             pass
+        elif inp == 10:
+            pub.sendMessage("motion_status", args=["OUT", self.status])
